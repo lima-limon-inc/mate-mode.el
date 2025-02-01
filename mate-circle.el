@@ -23,21 +23,57 @@
 ;; 🧉
 
 ;;; Code:
+(defvar mate-circle--mate-buffer-name "*mate-circle*")
 
-(get-buffer-create "*mate-circle*")
+(defun mate-circle--prompt-for-drinkers ()
+  (let
+      (
+       (drinkers-wip (list))
+       (current-drinker "")
+       )
+    (while (not
+            (string-equal
+             (setq current-drinker (read-string "Insert mate drinker name: "))
+             ""))
+      (setq drinkers-wip (append  drinkers-wip (list current-drinker)))
+      )
+    drinkers-wip
+    )
+  )
 
-(defun hello (drinkers)
+(defun mate-circle--get-drinkers (include-user)
+  "Prompts the user for a list of mate drinkers. If INCLUDE-USER is
+non-nil, then the machine's user will be included as well"
+  (let
+      (
+       (user (if include-user (list (concat user-login-name " 💧")) nil))
+       )
+    (append user (mate-circle--prompt-for-drinkers))
+  )
+  )
+
+
+(define-derived-mode mate-circle-mode text-mode "Mate Circle"
+  "\nA mode for keeping track of who's turn it is to drink mate."
+  (hack-dir-local-variables-non-file-buffer))
+
+(defun mate-circle--create-mate-buffer ()
+  "Create the mate circle if it does not already exist"
+  (with-current-buffer (get-buffer-create mate-circle--mate-buffer-name)
+    (insert "Hello, Emacs!\n")
+    (mate-circle-mode)
+    )
+  )
+
+(defun start-mate-circle (drinkers)
   (interactive
    (list
-    ;; (while t
-    ;;   )
-    (let
-        ((drinkers-wip (list)))
-      (setq drinkers-wip (append (read-string "Insert mate drinker name: ") drinkers-wip))
-      )
+    (mate-circle--get-drinkers t)
     )
    )
-  ;; (message drinkers)
+  (mate-circle--create-mate-buffer)
+   (mapc (lambda (drinker) (message (string drinker))) drinkers)
+  drinkers
   )
 
 
