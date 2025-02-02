@@ -106,12 +106,14 @@ non-nil, then the machine's user will be included as well"
     )
   )
 
-(defun mate-circle--create-mate-buffer (drinkers)
+(defun mate-circle--create-mate-buffer (drinkers new-buffer)
   "Create the mate circle if it does not already exist"
   (with-current-buffer (get-buffer-create mate-circle--mate-buffer-name)
-    (erase-buffer)
-    (insert "The Mate List: \n")
-    (mate-circle-mode)
+    (when new-buffer
+      (erase-buffer)
+      (insert "The Mate List: \n")
+      (mate-circle-mode)
+      )
     (mate-circle--insert-drinkers drinkers)
     )
   )
@@ -122,7 +124,7 @@ non-nil, then the machine's user will be included as well"
     (mate-circle--get-drinkers t)
     )
    )
-  (mate-circle--create-mate-buffer drinkers)
+  (mate-circle--create-mate-buffer drinkers t)
   )
 
 (defun mate-circle--replace-in-line (regexp replacement)
