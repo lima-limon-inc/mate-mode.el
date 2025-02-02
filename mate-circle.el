@@ -57,13 +57,22 @@ non-nil, then the machine's user will be included as well"
   "\nA mode for keeping track of who's turn it is to drink mate."
   (hack-dir-local-variables-non-file-buffer))
 
+(setf mate-circle--mate-emoji-cons (cons "🧉" "●"))
 
 (defun mate-circle--mate-emoji ()
-  (if (display-graphic-p) "🧉" "●")
+  (if (display-graphic-p)
+      (car mate-circle--mate-emoji-cons)
+    (cdr mate-circle--mate-emoji-cons)
+    )
   )
 
+(setf mate-circle--no-more-emoji-cons (cons "⛔" "X"))
+
 (defun mate-circle--no-more-emoji ()
-  (if (display-graphic-p) "⛔" "X")
+  (if (display-graphic-p)
+      (car mate-circle--no-more-emoji-cons)
+    (cdr mate-circle--no-more-emoji-cons)
+    )
   )
 
 
