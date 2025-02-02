@@ -212,4 +212,18 @@ non-nil, then the machine's user will be included as well"
     )
   )
 
+(defun whos-turn-it-is ()
+  (interactive)
+  (let
+      ((current-drinker
+        (save-excursion
+          (with-current-buffer (get-buffer-create mate-circle--mate-buffer-name)
+            (mate-circle--find-current-drinker)
+            (mate-circle--get-drinker-in-line)
+            )
+          )))
+    (message (format "It's %s's turn for mate" current-drinker))
+    )
+  )
+
 (provide 'mate-circle) ;;; mate-circle.el ends here
