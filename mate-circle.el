@@ -62,6 +62,10 @@ non-nil, then the machine's user will be included as well"
   (if (display-graphic-p) "🧉" "●")
   )
 
+(defun mate-circle--no-more-emoji ()
+  (if (display-graphic-p) "⛔" "X")
+  )
+
 
 (defun mate-circle--format-drinker (drinker has-mate)
   (let
@@ -106,7 +110,6 @@ non-nil, then the machine's user will be included as well"
     )
    )
   (mate-circle--create-mate-buffer drinkers)
-  ;; drinkers
   )
 
 (defun mate-circle--replace-in-line (regexp replacement)
@@ -126,7 +129,7 @@ non-nil, then the machine's user will be included as well"
        (current-line (line-number-at-pos))
        )
     (if (not (equal current-line max-lines))
-        (next-line 1)
+        (re-search-forward (rx "- [" (or " ") "] "))
       (progn
         (goto-char 0)
         (re-search-forward (rx "- [" (or " ") "] "))
@@ -135,25 +138,76 @@ non-nil, then the machine's user will be included as well"
     )
   )
 
-(defun mate-circle--pass-mate (mate-emoji-position)
-  (goto-char mate-emoji-position)
+(defun mate-circle--get-drinker-in-line ()
+  (let
+      (
+       (line-content (string-trim-right (thing-at-point 'line t)))
+       )
+
+    (replace-regexp-in-string (rx "- [" (or "🧉" "●") "] ")
+                              ""
+                              line-content
+                              )
+    )
+  )
+
+(defun mate-circle--pass-mate ()
+  (goto-char (mate-circle--find-current-drinker ))
   (mate-circle--replace-in-line (rx (or "🧉" "●")) " ")
   (mate-circle--next-mate-drinker)
   (mate-circle--replace-in-line (rx "- [ ] ") (format "- [%s] " (mate-circle--mate-emoji)))
+  (mate-circle--get-drinker-in-line)
+  )
+
+(defun mate-circle--find-current-drinker ()
+  (goto-char 0)
+  (re-search-forward (rx (or "🧉" "●")))
   )
 
 (defun next-mate-drinker ()
   (interactive)
-  (save-excursion
-    (with-current-buffer (get-buffer-create mate-circle--mate-buffer-name)
-      (goto-char 0)
-      (let
-          (
-           (mate-position (re-search-forward (rx (or "🧉" "●"))))
-           )
-        (mate-circle--pass-mate mate-position)
-        )
-      )
+  (let
+      ((current-drinker
+        (save-excursion
+          (with-current-buffer (get-buffer-create mate-circle--mate-buffer-name)
+              (mate-circle--pass-mate)
+            )
+          )))
+    (message (format "It's %s's turn for mate" current-drinker))
+    )
+  )
+
+(defun next-mate-drinker ()
+  (interactive)
+  (let
+      ((current-drinker
+        (save-excursion
+          (with-current-buffer (get-buffer-create mate-circle--mate-buffer-name)
+              (mate-circle--pass-mate)
+            )
+          )))
+    (message (format "It's %s's turn for mate" current-drinker))
+    )
+  )
+
+(defun mate-circle--no-more-mate ()
+  (goto-char (mate-circle--find-current-drinker ))
+  (mate-circle--replace-in-line (rx (or "🧉" "●")) (mate-circle--no-more-emoji))
+  (mate-circle--next-mate-drinker)
+  (mate-circle--replace-in-line (rx "- [ ] ") (format "- [%s] " (mate-circle--mate-emoji)))
+  (mate-circle--get-drinker-in-line)
+  )
+
+(defun no-more-mate ()
+  (interactive)
+  (let
+      ((current-drinker
+        (save-excursion
+          (with-current-buffer (get-buffer-create mate-circle--mate-buffer-name)
+              (mate-circle--no-more-mate)
+            )
+          )))
+    (message (format "It's %s's turn for mate" current-drinker))
     )
   )
 
