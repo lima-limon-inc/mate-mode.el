@@ -25,6 +25,10 @@
 ;;; Code:
 (defvar mate-circle--mate-buffer-name "*mate-circle*")
 
+(defun mate-circle--prompt-for-drinker ()
+  (read-string "Insert mate drinker name: ")
+  )
+
 (defun mate-circle--prompt-for-drinkers ()
   (let
       (
@@ -33,7 +37,7 @@
        )
     (while (not
             (string-equal
-             (setq current-drinker (read-string "Insert mate drinker name: "))
+             (setq current-drinker (mate-circle--prompt-for-drinker))
              ""))
       (setq drinkers-wip (append  drinkers-wip (list current-drinker)))
       )
