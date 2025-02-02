@@ -128,8 +128,9 @@ non-nil, then the machine's user will be included as well"
        (max-lines (count-lines (point-min) (point-max)))
        (current-line (line-number-at-pos))
        )
-    (if (not (equal current-line max-lines))
-        (re-search-forward (rx "- [" (or " ") "] "))
+    ;; When it fails to find someone at the bottom, go to the top and
+    ;; start looking again
+    (when (not (re-search-forward (rx "- [" (or " ") "] ") nil t))
       (progn
         (goto-char 0)
         (re-search-forward (rx "- [" (or " ") "] "))
