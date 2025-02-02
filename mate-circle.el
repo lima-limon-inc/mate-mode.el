@@ -119,9 +119,7 @@ non-nil, then the machine's user will be included as well"
     )
   )
 
-(defun mate-circle--pass-mate (mate-emoji-position)
-  (goto-char mate-emoji-position)
-  (mate-circle--replace-in-line (rx (or "🧉" "●")) " ")
+(defun mate-circle--next-mate-drinker ()
   (let
       (
        (max-lines (count-lines (point-min) (point-max)))
@@ -135,6 +133,12 @@ non-nil, then the machine's user will be included as well"
         )
       )
     )
+  )
+
+(defun mate-circle--pass-mate (mate-emoji-position)
+  (goto-char mate-emoji-position)
+  (mate-circle--replace-in-line (rx (or "🧉" "●")) " ")
+  (mate-circle--next-mate-drinker)
   (mate-circle--replace-in-line (rx "- [ ] ") (format "- [%s] " (mate-circle--mate-emoji)))
   )
 
