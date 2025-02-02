@@ -62,6 +62,7 @@ non-nil, then the machine's user will be included as well"
   (if (display-graphic-p) "🧉" "●")
   )
 
+
 (defun mate-circle--format-drinker (drinker has-mate)
   (let
       (
@@ -108,5 +109,50 @@ non-nil, then the machine's user will be included as well"
   ;; drinkers
   )
 
+(defun mate-circle--pass-mate (mate-emoji-position)
+  (goto-char mate-emoji-position)
+  (let
+      (
+       (line-start (progn (beginning-of-line) (point)))
+       (line-end (progn (end-of-line) (point)))
+       )
+    (replace-regexp-in-region (rx (or "🧉" "●")) " " line-start line-end)
+    )
+  (let
+      (
+       (max-lines (count-lines (point-min) (point-max)))
+       (current-line (line-number-at-pos))
+       )
+    (if (not (equal current-line max-lines))
+        (next-line 1)
+      (progn
+        (goto-char 0)
+        (re-search-forward (rx "- [" (or " ") "] "))
+        )
+      )
+    )
+  (let
+      (
+       (line-start (progn (beginning-of-line) (point)))
+       (line-end (progn (end-of-line) (point)))
+       )
+    (replace-regexp-in-region (rx "- [ ] ") (format "- [%s] " (mate-circle--mate-emoji)) line-start line-end)
+    )
+  )
+
+(defun next-mate-drinker ()
+  (interactive)
+  (save-excursion
+    (with-current-buffer (get-buffer-create mate-circle--mate-buffer-name)
+      (goto-char 0)
+      (let
+          (
+           (mate-position (re-search-forward (rx (or "🧉" "●"))))
+           )
+        (mate-circle--pass-mate mate-position)
+        )
+      )
+    )
+  )
 
 (provide 'mate-circle) ;;; mate-circle.el ends here
