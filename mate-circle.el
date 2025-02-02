@@ -187,19 +187,6 @@ non-nil, then the machine's user will be included as well"
     )
   )
 
-(defun next-mate-drinker ()
-  (interactive)
-  (let
-      ((current-drinker
-        (save-excursion
-          (with-current-buffer (get-buffer-create mate-circle--mate-buffer-name)
-              (mate-circle--pass-mate)
-            )
-          )))
-    (message (format "It's %s's turn for mate" current-drinker))
-    )
-  )
-
 (defun mate-circle--no-more-mate ()
   (goto-char (mate-circle--find-current-drinker ))
   (mate-circle--replace-in-line (rx (or "🧉" "●")) (mate-circle--no-more-emoji))
