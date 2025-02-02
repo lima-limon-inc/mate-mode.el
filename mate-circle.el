@@ -57,11 +57,44 @@ non-nil, then the machine's user will be included as well"
   "\nA mode for keeping track of who's turn it is to drink mate."
   (hack-dir-local-variables-non-file-buffer))
 
-(defun mate-circle--create-mate-buffer ()
+
+(defun mate-circle--mate-emoji ()
+  (if (display-graphic-p) "🧉" "●")
+  )
+
+(defun mate-circle--format-drinker (drinker has-mate)
+  (let
+      (
+       (drinker drinker)
+       (has-mate-symbol (if has-mate (mate-circle--mate-emoji) " "))
+       )
+    (format "- [%s] %s\n" has-mate-symbol drinker)
+    )
+  )
+
+
+(defun mate-circle--insert-drinkers (drinkers)
+  (let
+      (
+       (has-mate t)
+       )
+    (mapc
+     (lambda (drinker)
+       (progn
+         (insert (mate-circle--format-drinker drinker has-mate)))
+         (setq has-mate nil)
+       )
+     drinkers)
+    )
+  )
+
+(defun mate-circle--create-mate-buffer (drinkers)
   "Create the mate circle if it does not already exist"
   (with-current-buffer (get-buffer-create mate-circle--mate-buffer-name)
-    (insert "Hello, Emacs!\n")
+    (erase-buffer)
+    (insert "The Mate List: \n")
     (mate-circle-mode)
+    (mate-circle--insert-drinkers drinkers)
     )
   )
 
@@ -71,9 +104,8 @@ non-nil, then the machine's user will be included as well"
     (mate-circle--get-drinkers t)
     )
    )
-  (mate-circle--create-mate-buffer)
-   (mapc (lambda (drinker) (message (string drinker))) drinkers)
-  drinkers
+  (mate-circle--create-mate-buffer drinkers)
+  ;; drinkers
   )
 
 
