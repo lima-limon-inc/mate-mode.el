@@ -127,6 +127,15 @@ non-nil, then the machine's user will be included as well"
   (mate-circle--create-mate-buffer drinkers t)
   )
 
+(defun add-new-drinker (drinker)
+  (interactive
+   (list
+    (mate-circle--prompt-for-drinker)
+    )
+   )
+  (mate-circle--create-mate-buffer (list drinker) t)
+  )
+
 (defun mate-circle--replace-in-line (regexp replacement)
   (let
       (
