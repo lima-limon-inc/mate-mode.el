@@ -109,15 +109,19 @@ non-nil, then the machine's user will be included as well"
   ;; drinkers
   )
 
-(defun mate-circle--pass-mate (mate-emoji-position)
-  (goto-char mate-emoji-position)
+(defun mate-circle--replace-in-line (regexp replacement)
   (let
       (
        (line-start (progn (beginning-of-line) (point)))
        (line-end (progn (end-of-line) (point)))
        )
-    (replace-regexp-in-region (rx (or "🧉" "●")) " " line-start line-end)
+    (replace-regexp-in-region regexp replacement line-start line-end)
     )
+  )
+
+(defun mate-circle--pass-mate (mate-emoji-position)
+  (goto-char mate-emoji-position)
+  (mate-circle--replace-in-line (rx (or "🧉" "●")) " ")
   (let
       (
        (max-lines (count-lines (point-min) (point-max)))
@@ -131,13 +135,7 @@ non-nil, then the machine's user will be included as well"
         )
       )
     )
-  (let
-      (
-       (line-start (progn (beginning-of-line) (point)))
-       (line-end (progn (end-of-line) (point)))
-       )
-    (replace-regexp-in-region (rx "- [ ] ") (format "- [%s] " (mate-circle--mate-emoji)) line-start line-end)
-    )
+  (mate-circle--replace-in-line (rx "- [ ] ") (format "- [%s] " (mate-circle--mate-emoji)))
   )
 
 (defun next-mate-drinker ()
