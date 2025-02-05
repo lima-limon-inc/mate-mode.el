@@ -91,10 +91,10 @@ non-nil, then the machine's user will be included as well"
   )
 
 
-(defun mate-circle--insert-drinkers (drinkers)
+(defun mate-circle--insert-drinkers (drinkers new-buffer)
   (let
       (
-       (has-mate t)
+       (has-mate new-buffer)
        )
     (mapc
      (lambda (drinker)
@@ -109,12 +109,13 @@ non-nil, then the machine's user will be included as well"
 (defun mate-circle--create-mate-buffer (drinkers new-buffer)
   "Create the mate circle if it does not already exist"
   (with-current-buffer (get-buffer-create mate-circle--mate-buffer-name)
+    (end-of-buffer)
     (when new-buffer
       (erase-buffer)
       (insert "The Mate List: \n")
       (mate-circle-mode)
       )
-    (mate-circle--insert-drinkers drinkers)
+    (mate-circle--insert-drinkers drinkers new-buffer)
     )
   )
 
@@ -133,7 +134,7 @@ non-nil, then the machine's user will be included as well"
     (mate-circle--prompt-for-drinker)
     )
    )
-  (mate-circle--create-mate-buffer (list drinker) t)
+  (mate-circle--create-mate-buffer (list drinker) nil)
   )
 
 (defun mate-circle--replace-in-line (regexp replacement)
