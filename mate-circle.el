@@ -119,7 +119,7 @@ non-nil, then the machine's user will be included as well"
     )
   )
 
-(defun start-mate-circle (drinkers)
+(defun mate-mate-start-mate-circle (drinkers)
   (interactive
    (list
     (mate-circle--get-drinkers t)
@@ -128,7 +128,7 @@ non-nil, then the machine's user will be included as well"
   (mate-circle--create-mate-buffer drinkers t)
   )
 
-(defun add-new-drinker (drinker)
+(defun mate-mate-add-new-drinker (drinker)
   (interactive
    (list
     (mate-circle--prompt-for-drinker)
@@ -190,7 +190,7 @@ non-nil, then the machine's user will be included as well"
   (re-search-forward (rx (or "🧉" "●")))
   )
 
-(defun next-mate-drinker ()
+(defun mate-mate-next-mate-drinker ()
   (interactive)
   (let
       ((current-drinker
@@ -211,7 +211,7 @@ non-nil, then the machine's user will be included as well"
   (mate-circle--get-drinker-in-line)
   )
 
-(defun no-more-mate ()
+(defun mate-mate-no-more-mate ()
   (interactive)
   (let
       ((current-drinker
@@ -224,7 +224,7 @@ non-nil, then the machine's user will be included as well"
     )
   )
 
-(defun whos-turn-it-is ()
+(defun mate-mate-whos-turn-it-is ()
   (interactive)
   (let
       ((current-drinker
