@@ -149,6 +149,7 @@ non-nil, then the machine's user will be included as well"
   )
 
 (defun mate-circle--next-mate-drinker ()
+  (mate-mode--cancel-time mate-mode--current-drinker-timer)
   (let
       (
        (max-lines (count-lines (point-min) (point-max)))
@@ -191,6 +192,12 @@ non-nil, then the machine's user will be included as well"
   (re-search-forward (rx (or "🧉" "●")))
   )
 
+(defun mate-mode--cancel-time (timer)
+  (when (timerp timer)
+    (cancel-timer timer)
+    )
+  )
+
 (defun mate-mode-next-mate-drinker ()
   (interactive)
   (let
@@ -200,7 +207,7 @@ non-nil, then the machine's user will be included as well"
               (mate-circle--pass-mate)
             )
           )))
-    (setq mate-mode--current-drinker-timer (run-at-time "7 seconds" nil (lambda () (message (format "Che, no es microfono %s" current-drinker)))))
+    (setq mate-mode--current-drinker-timer (run-at-time "2 minutes" nil (lambda () (message (format "Che, no es microfono %s" current-drinker)))))
     (message (format "It's %s's turn for mate" current-drinker))
     )
   )
