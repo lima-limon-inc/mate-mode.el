@@ -126,6 +126,7 @@ non-nil, then the machine's user will be included as well"
     )
    )
   (mate-circle--create-mate-buffer drinkers t)
+  (setq mate-mode--current-drinker-timer nil)
   )
 
 (defun mate-mode-add-new-drinker (drinker)
@@ -199,6 +200,7 @@ non-nil, then the machine's user will be included as well"
               (mate-circle--pass-mate)
             )
           )))
+    (setq mate-mode--current-drinker-timer (run-at-time "7 seconds" nil (lambda () (message (format "Che, no es microfono %s" current-drinker)))))
     (message (format "It's %s's turn for mate" current-drinker))
     )
   )
