@@ -25,11 +25,11 @@
 ;;; Code:
 (defvar mate-mode--mate-buffer-name "*mate-mode*")
 
-(defun mate-mode--prompt-for-drinker ()
+(defun mate-circle--prompt-for-drinker ()
   (read-string "Insert mate drinker name: ")
   )
 
-(defun mate-mode--prompt-for-drinkers ()
+(defun mate-circle--prompt-for-drinkers ()
   (let
       (
        (drinkers-wip (list))
@@ -45,7 +45,7 @@
     )
   )
 
-(defun mate-mode--get-drinkers (include-user)
+(defun mate-circle--get-drinkers (include-user)
   "Prompts the user for a list of mate drinkers. If INCLUDE-USER is
 non-nil, then the machine's user will be included as well"
   (let
@@ -63,7 +63,7 @@ non-nil, then the machine's user will be included as well"
 
 (setf mate-circle--mate-emoji-cons (cons "🧉" "●"))
 
-(defun mate-mode--mate-emoji ()
+(defun mate-circle--mate-emoji ()
   (if (display-graphic-p)
       (car mate-circle--mate-emoji-cons)
     (cdr mate-circle--mate-emoji-cons)
@@ -72,7 +72,7 @@ non-nil, then the machine's user will be included as well"
 
 (setf mate-circle--no-more-emoji-cons (cons "⛔" "X"))
 
-(defun mate-mode--no-more-emoji ()
+(defun mate-circle--no-more-emoji ()
   (if (display-graphic-p)
       (car mate-circle--no-more-emoji-cons)
     (cdr mate-circle--no-more-emoji-cons)
@@ -80,7 +80,7 @@ non-nil, then the machine's user will be included as well"
   )
 
 
-(defun mate-mode--format-drinker (drinker has-mate)
+(defun mate-circle--format-drinker (drinker has-mate)
   (let
       (
        (drinker drinker)
@@ -91,7 +91,7 @@ non-nil, then the machine's user will be included as well"
   )
 
 
-(defun mate-mode--insert-drinkers (drinkers new-buffer)
+(defun mate-circle--insert-drinkers (drinkers new-buffer)
   (let
       (
        (has-mate new-buffer)
@@ -106,7 +106,7 @@ non-nil, then the machine's user will be included as well"
     )
   )
 
-(defun mate-mode--create-mate-buffer (drinkers new-buffer)
+(defun mate-circle--create-mate-buffer (drinkers new-buffer)
   "Create the mate circle if it does not already exist"
   (with-current-buffer (get-buffer-create mate-circle--mate-buffer-name)
     (end-of-buffer)
@@ -138,7 +138,7 @@ non-nil, then the machine's user will be included as well"
   (mate-circle--create-mate-buffer (list drinker) nil)
   )
 
-(defun mate-mode--replace-in-line (regexp replacement)
+(defun mate-circle--replace-in-line (regexp replacement)
   (let
       (
        (line-start (progn (beginning-of-line) (point)))
@@ -148,7 +148,7 @@ non-nil, then the machine's user will be included as well"
     )
   )
 
-(defun mate-mode--next-mate-drinker ()
+(defun mate-circle--next-mate-drinker ()
   (let
       (
        (max-lines (count-lines (point-min) (point-max)))
@@ -165,7 +165,7 @@ non-nil, then the machine's user will be included as well"
     )
   )
 
-(defun mate-mode--get-drinker-in-line ()
+(defun mate-circle--get-drinker-in-line ()
   (let
       (
        (line-content (string-trim-right (thing-at-point 'line t)))
@@ -178,7 +178,7 @@ non-nil, then the machine's user will be included as well"
     )
   )
 
-(defun mate-mode--pass-mate ()
+(defun mate-circle--pass-mate ()
   (goto-char (mate-circle--find-current-drinker ))
   (mate-circle--replace-in-line (rx (or "🧉" "●")) " ")
   (mate-circle--next-mate-drinker)
@@ -186,7 +186,7 @@ non-nil, then the machine's user will be included as well"
   (mate-circle--get-drinker-in-line)
   )
 
-(defun mate-mode--find-current-drinker ()
+(defun mate-circle--find-current-drinker ()
   (goto-char 0)
   (re-search-forward (rx (or "🧉" "●")))
   )
