@@ -1,4 +1,4 @@
-;;; mate-circle.el --- A small emacs package to manage who's turn it is in the mate circle  -*- lexical-binding: t; -*-
+;;; mate-mode.el --- A small emacs package to manage who's turn it is in the mate circle  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2025  Tomas Fabrizio Orsi
 
@@ -23,7 +23,7 @@
 ;; 🧉
 
 ;;; Code:
-(defvar mate-circle--mate-buffer-name "*mate-circle*")
+(defvar mate-mode--mate-buffer-name "*mate-mode*")
 
 (defun mate-mode--prompt-for-drinker ()
   (read-string "Insert mate drinker name: ")
@@ -238,4 +238,4 @@ non-nil, then the machine's user will be included as well"
     )
   )
 
-(provide 'mate-circle) ;;; mate-circle.el ends here
+(provide 'mate-mode) ;;; mate-mode.el ends here
