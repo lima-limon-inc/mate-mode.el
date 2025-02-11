@@ -23,7 +23,7 @@
 ;; 🧉
 
 ;;; Code:
-(defvar mate-mode--mate-buffer-name "*mate-mode*")
+(defvar mate-circle--mate-buffer-name "*mate-mode*")
 
 (defun mate-circle--prompt-for-drinker ()
   (read-string "Insert mate drinker name: ")
