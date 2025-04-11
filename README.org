@@ -1,0 +1,29 @@
+* Mate mode
+Small Emacs package to handle a mate (🧉) round.
+
+** Usage
+- ~M-x~ ~mate-mode-start-mate-circle~
+  - Starts the mate round; will prompt the user for every person present in the round. Will also create a buffer called ~*mate-mode*~ which will hold the state. It's mainly intended for the package to modify; although it /can/ be manipulated manually as long as the state is maintained consistent.
+- ~M-x~ ~mate-mode-add-new-drinker~
+  - Will prompt for a new drinker; and will be added to the end of the round.
+- ~M-x~ ~mate-mode-next-mate-drinker~
+  - Will pass the mate to the next drinker and will show the new drinker in the mini-buffer.
+- ~M-x~ ~mate-mode-no-more-mate~
+  - Will remove the *current* user from the mate round.
+  - In reality, the user is marked with the ⛔ in the ~*mate-mode*~ buffer; the emoji can be replaced for a space to re-introduce the user to the mate round.
+- ~M-x~ ~mate-mode-whos-turn-it-is~
+  - Shows the current drinker in the mini-buffer.
+
+** Special thanks
+I want to dedicate this small package to my companions in wizardry, the gang also known as the "Doctors of reality":
+- Dami, the warlock
+- Dylan, the alchemist
+- Lean, the sorcerer
+- Tomi, the mage
+
+And last, but certainly not least, I want to shout-out our magical mentor:
+- Fercho, the grand wizard; holder of truth, good ideas and an even greater heart.
+  - Whilst using only 1% of his magical abilities, he conjured a port of this plugin, written in Elixir (magical language) with a fully fledged GUI. Linked here: https://github.com/fborello-lambda/quiero_mate
+  - Your influence is everlasting. Godspeed Fercho!
+
+Keep it real 🤘
